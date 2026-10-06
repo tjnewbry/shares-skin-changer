@@ -2,12 +2,11 @@ plugins {
 	id 'fabric-loom' version "${loom_version}"
 }
 
-// Share the core code with the CLI: compile ../src directly, minus CLI-only classes
+// The core classes (skin validation, upload) live in ../src, carried over from the original CLI
 sourceSets {
 	main {
 		java {
 			srcDir '../src'
-			exclude 'net/tjnewbry/skinhead/cli/**'
 		}
 	}
 }
