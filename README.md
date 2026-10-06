@@ -1,3 +1,5 @@
+[![Build](https://github.com/tjnewbry/shares-skin-changer/actions/workflows/build.yml/badge.svg)](https://github.com/tjnewbry/shares-skin-changer/actions/workflows/build.yml)
+
 # Overview
 
 **Share's Skin Changer** is a client-side Fabric mod for Minecraft 1.20.4 that changes your skin through the Mojang API without leaving the game.
@@ -22,6 +24,7 @@ The project started as a command-line program that read the access token from Pr
 src/net/tjnewbry/skinhead/core/   skin validation, arm detection, and the upload request
 mod/                              Fabric mod project; compiles ../src as well as its own sources
 docs/cli-design.md                the original CLI design, written before any code
+docs/screenshots/                 screenshots for this README
 test-skins/                       skins for checking arm width detection
 ```
 
