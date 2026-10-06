@@ -1,0 +1,28 @@
+# Builds the mod on every push to main and every pull request, and keeps the jar as a downloadable artifact.
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # Also checks that the committed Gradle wrapper jar is genuine
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: ./gradlew build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shares-skin-changer
+          path: build/libs/*.jar
