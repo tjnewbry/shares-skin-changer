@@ -1,0 +1,53 @@
+plugins {
+	id 'fabric-loom' version "${loom_version}"
+}
+
+// Share the core code with the CLI: compile ../src directly, minus CLI-only classes
+sourceSets {
+	main {
+		java {
+			srcDir '../src'
+			exclude 'net/tjnewbry/skinhead/cli/**'
+		}
+	}
+}
+
+loom {
+	mods {
+		"skinhead" {
+			sourceSet sourceSets.main
+		}
+	}
+}
+
+dependencies {
+	// To change the versions see the gradle.properties file
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+}
+
+processResources {
+	def version = project.version
+	inputs.property "version", version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": version
+	}
+}
+
+// The release jar (what goes in a mods folder) is named shares-skin-changer-VERSION+MCVERSION.jar
+remapJar {
+	archiveFileName = "shares-skin-changer-${project.version}+${project.minecraft_version}.jar"
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 17
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+}

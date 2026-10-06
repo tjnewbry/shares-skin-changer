@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"id": "skinhead",
+	"version": "${version}",
+	"name": "Share's Skin Changer",
+	"description": "Change your Minecraft skin from the title screen.",
+	"authors": [
+		"tjnewbry"
+	],
+	"icon": "assets/skinhead/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"net.tjnewbry.skinhead.mod.SkinheadClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.15.0",
+		"minecraft": "~1.20.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	}
+}
