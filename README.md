@@ -16,9 +16,9 @@ Steps to build and/or run the software:
 
 1. Install JDK 17 or newer.
 2. Clone the repository: `git clone https://github.com/tjnewbry/shares-skin-changer.git`
-3. Go into the mod project: `cd shares-skin-changer/mod`
+3. Go into the project: `cd shares-skin-changer`
 4. Build: `./gradlew build` (on Windows Command Prompt: `gradlew.bat build`)
-5. Copy `mod/build/libs/shares-skin-changer-<version>+1.20.4.jar` into the `mods` folder of a Minecraft 1.20.4 Fabric instance that also has Fabric API installed.
+5. Copy `build/libs/shares-skin-changer-<version>+1.20.4.jar` into the `mods` folder of a Minecraft 1.20.4 Fabric instance that also has Fabric API installed.
 
 Instructions for using the software:
 
@@ -52,9 +52,10 @@ I found these websites useful in developing this software:
 
 The following items I plan to fix, improve, and/or add to this project in the future:
 
-* [ ] Support old-style 64x32 skins (currently rejected)
-* [ ] Move the Fabric project to the repository root now that the CLI is gone
+* [ ] Code motion and optimization pass
 * [ ] Read skins with Minecraft's own image class instead of Java's ImageIO
+* [ ] Port to other Minecraft versions, including those that require Java 25
+* [ ] Support old-style 64x32 skins (currently rejected)
 
 ## History
 
@@ -67,11 +68,12 @@ The project started as a command-line program that read the access token from Pr
 ## Layout
 
 ```
-src/net/tjnewbry/skinhead/core/   skin validation, arm detection, and the upload request
-mod/                              Fabric mod project; compiles ../src as well as its own sources
-docs/cli-design.md                the original CLI design, written before any code
-docs/screenshots/                 screenshots for this README
-test-skins/                       skins for checking arm width detection
+src/main/java/net/tjnewbry/skinhead/core/   skin validation, arm detection, and the upload request (from the CLI)
+src/main/java/net/tjnewbry/skinhead/mod/    the Fabric mod: title screen hook, skin screen, previews
+src/main/resources/                         fabric.mod.json and the mod icon
+docs/cli-design.md                          the original CLI design, written before any code
+docs/screenshots/                           screenshots for this README
+test-skins/                                 skins for checking arm width detection
 ```
 
 ## License
