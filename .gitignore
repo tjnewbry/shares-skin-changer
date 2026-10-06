@@ -1,11 +1,3 @@
-# CLI build output
-out/
-dist/
-*.class
-
-# CLI local config (holds the accounts file path and username)
-config.properties
-
 # Local notes and plans
 CLAUDE.md
 .claude/
