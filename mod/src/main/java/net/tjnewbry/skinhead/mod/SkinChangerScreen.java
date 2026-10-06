@@ -182,7 +182,7 @@ public class SkinChangerScreen extends Screen {
         boolean detected = armType == skin.detectedArmType();
         Text[] lines = {
                 Text.literal(armType.pixels() + "px"),
-                Text.literal((armType == ArmType.SLIM ? "Slim" : "Default") + " arms " + (detected ? "detected." : "selected.")),
+                Text.literal((armType == ArmType.SLIM ? "Slim" : "Classic") + " arms " + (detected ? "detected." : "selected.")),
                 clickLine(detected)
         };
         // Always as wide as "Click here to change it.", so the block doesn't shift when the text toggles
