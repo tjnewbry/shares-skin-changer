@@ -1,3 +1,5 @@
+> The original design for the command-line version of this project, written before any code. Kept as a record of the design process; the code has since moved on (see the README).
+
 # Psuedocode
 
 Is there a config file?

@@ -1,3 +1,20 @@
+# CLI build output
 out/
 dist/
 *.class
+
+# CLI local config (holds the accounts file path and username)
+config.properties
+
+# Local notes and plans
+CLAUDE.md
+.claude/
+mod-plan*.md
+
+# Local-only test skins
+test-skin-weird.png
+test-skin-wrong.png
+
+# Editors
+.vscode/
+.idea/
