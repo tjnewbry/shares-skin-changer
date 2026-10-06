@@ -1,11 +1,17 @@
+package net.tjnewbry.skinhead.cli;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class Config {
 
-    private String properties; // path to the properties file
+    private final String properties; // path to the properties file
     private String accountsPath; // path to accounts file
+    private String accountsJson; // cached contents of the accounts file
     private String accountsUsername; // username of the account to change skin for
     private int launcher; // which launcher? account files are formatted differently
     /*
@@ -34,10 +40,10 @@ public class Config {
     }
 
     private boolean loadProperties(String propertiesFile) {
-        try {
+        try (InputStream in = Files.newInputStream(Path.of(propertiesFile))) {
             // Find file
             Properties props = new Properties();
-            props.load(Files.newInputStream(Path.of(propertiesFile)));
+            props.load(in);
 
             // Read values
             accountsPath = props.getProperty("accountsPath");
@@ -96,6 +102,7 @@ public class Config {
 
             System.out.print("Please enter the path to " + expected + ": ");
             accountsPath = System.console().readLine();
+            accountsJson = null; // path changed, drop any cached contents
 
             if (!accountsPath.endsWith(".json")) {
                 System.out.println("[!] Please select a .json file");
@@ -119,39 +126,47 @@ public class Config {
     }
 
     private void saveProperties() {
-        try {
+        try (OutputStream out = Files.newOutputStream(Path.of(properties))) {
             Properties props = new Properties();
             props.setProperty("accountsPath", accountsPath);
             props.setProperty("accountsUsername", accountsUsername);
             props.setProperty("launcher", Integer.toString(launcher));
-            props.store(Files.newOutputStream(Path.of(properties)), null);
+            props.store(out, null);
         }
         catch (Exception e) {
             System.out.println(e);
             System.exit(1);
         }
+    }
+
+    // Reads the accounts file once and caches it for later lookups
+    private String accountsJson() throws IOException {
+        if (accountsJson == null) accountsJson = Files.readString(Path.of(accountsPath));
+        return accountsJson;
     }
 
     private boolean checkUsernameExists(String username) {
         try {
-            String accountsFile = Files.readString(Path.of(accountsPath));
-            return accountsFile.contains(username);
+            return username != null && accountsJson().contains(username);
         }
         catch (Exception e) {
-            System.out.println(e);
-            System.exit(1);
-            return false;
+            return false; // missing/unreadable accounts file means the config is invalid
         }
+    }
+
+    // Returns the index just past the ':' of a field inside this account's "ygg" block (Prism format)
+    private int yggFieldValueStart(String json, String field) {
+        int nameIdx = json.indexOf("\"" + accountsUsername + "\"");
+        int yggIdx = json.indexOf("\"ygg\"", nameIdx);
+        int fieldIdx = json.indexOf("\"" + field + "\"", yggIdx);
+        return json.indexOf(":", fieldIdx) + 1;
     }
 
     public boolean isTokenExpired() {
         try {
-            String json = Files.readString(Path.of(accountsPath));
+            String json = accountsJson();
 
-            int nameIdx = json.indexOf("\"" + accountsUsername + "\"");
-            int yggIdx = json.indexOf("\"ygg\"", nameIdx);
-            int expIdx = json.indexOf("\"exp\"", yggIdx);
-            int start = json.indexOf(":", expIdx) + 1;
+            int start = yggFieldValueStart(json, "exp");
             while (json.charAt(start) == ' ') start++;
             int end = start;
             while (Character.isDigit(json.charAt(end))) end++;
@@ -178,12 +193,9 @@ public class Config {
             // Prism Launcher
             case 2 -> {
                 try {
-                    String json = Files.readString(Path.of(accountsPath));
+                    String json = accountsJson();
 
-                    int nameIdx = json.indexOf("\"" + accountsUsername + "\"");
-                    int yggIdx = json.indexOf("\"ygg\"", nameIdx);
-                    int tokenIdx = json.indexOf("\"token\"", yggIdx);
-                    int start = json.indexOf("\"", tokenIdx + 7) + 1;
+                    int start = json.indexOf("\"", yggFieldValueStart(json, "token")) + 1;
                     int end = json.indexOf("\"", start);
 
                     return json.substring(start, end);
