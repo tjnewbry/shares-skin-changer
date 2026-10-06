@@ -7,6 +7,10 @@
 	"authors": [
 		"tjnewbry"
 	],
+	"contact": {
+		"sources": "https://github.com/tjnewbry/shares-skin-changer"
+	},
+	"license": "MIT",
 	"icon": "assets/skinhead/icon.png",
 	"environment": "client",
 	"entrypoints": {
