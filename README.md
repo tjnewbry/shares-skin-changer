@@ -4,6 +4,8 @@
 
 **Share's Skin Changer** is a client-side Fabric mod for Minecraft 1.20.4 that adds a menu on the title screen allowing players to change their skin without leaving the game.
 
+[Software Demo Video](https://youtu.be/id9l-zBFdKs)
+
 ## Mod Dependencies
 
 * Fabric API
