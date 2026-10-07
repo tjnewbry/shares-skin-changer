@@ -6,6 +6,10 @@
 
 [Software Demo Video](https://youtu.be/id9l-zBFdKs)
 
+![Title screen with the Change Skin button and the current skin](docs/screenshots/title-screen.png)
+![Skin screen with a skin chosen and its arm width detected](docs/screenshots/skin-selected.png)
+![Skin screen after an upload, with the output log and the updated server preview](docs/screenshots/after-upload.png)
+
 ## Mod Dependencies
 
 * Fabric API
